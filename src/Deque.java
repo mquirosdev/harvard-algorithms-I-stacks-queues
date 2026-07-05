@@ -1,6 +1,30 @@
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Deque<DequeType> {
+public class Deque<DequeType> implements Iterable<DequeType> {
+    private class DequeIterator implements Iterator<DequeType> {
+        private Node<DequeType> current = head;
+
+        public DequeType next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("no next element");
+            }
+
+            DequeType value = current.value;
+            current = current.next;
+
+            return value;
+        }
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
     private class Node<NodeType> {
         public NodeType value;
         public Node<NodeType> next;
@@ -107,11 +131,13 @@ public class Deque<DequeType> {
         return totalNodes == 0;
     }
 
+    public Iterator<DequeType> iterator() {
+        return new DequeIterator();
+    }
+
     public void print() {
-        Node<DequeType> current = head;
-        while (current != null) {
-            System.out.printf("(" + current.value + ") ->");
-            current = current.next;
+        for (DequeType value : this) {
+            System.out.printf("(" + value + ") ->");
         }
         System.out.println("size " + totalNodes);
     }
