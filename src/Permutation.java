@@ -9,7 +9,7 @@ public class Permutation {
             rq.enqueue(StdIn.readString());
         }
 
-        for(int i = 0; i < totalItems; i++) {
+        for (int i = 0; i < totalItems; i++) {
             System.out.println(rq.dequeue());
         }
     }

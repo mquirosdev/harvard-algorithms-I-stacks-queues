@@ -119,7 +119,7 @@ public class Deque<DequeItem> implements Iterable<DequeItem> {
         Node<DequeItem> node = tail;
         tail = tail.prev;
 
-        if(tail != null) {
+        if (tail != null) {
             tail.next = null;
         } else {
             head = null;

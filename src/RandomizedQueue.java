@@ -98,11 +98,17 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
     public void print() {
         System.out.print("|" + nextItemIndex + "| -> ");
         for (int i = 0; i < items.length; i++) {
-           if ( items[i] == null) { System.out.print("x"); }
-           else { System.out.print(items[i]); }
+           if (items[i] == null) {
+               System.out.print("x");
+           } else {
+               System.out.print(items[i]);
+           }
 
-           if(i == nextItemIndex - 1) System.out.print("|");
+           if (i == nextItemIndex - 1) {
+               System.out.print("|");
+           }
         }
+
         System.out.println();
         System.out.println("*******");
     }
@@ -110,14 +116,18 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
     private void divideItemsLength() {
         int targetSize = items.length / 2;
         RandomizedQueueItem[] newItems =  (RandomizedQueueItem[]) new Object[targetSize];
-        for (int i = 0; i < newItems.length; i++) newItems[i] = items[i];
+        for (int i = 0; i < newItems.length; i++) {
+            newItems[i] = items[i];
+        }
         items = newItems;
     }
 
     private void doubleItemsLength() {
         int targetSize = items.length * 2;
         RandomizedQueueItem[] newItems =  (RandomizedQueueItem[]) new Object[targetSize];
-        for (int i = 0; i < items.length; i++) newItems[i] = items[i];
+        for (int i = 0; i < items.length; i++) {
+            newItems[i] = items[i];
+        }
         items = newItems;
     }
 
