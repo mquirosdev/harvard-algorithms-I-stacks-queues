@@ -2,15 +2,15 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.StdRandom;
 
-public class RandomizedQueue<RandomizedQueueItem> implements Iterable<RandomizedQueueItem> {
+public class RandomizedQueue<Item> implements Iterable<Item> {
     private int nextItemIndex;
-    private RandomizedQueueItem[] items;
+    private Item[] items;
 
-    private class RandomizedQueueIterator implements Iterator<RandomizedQueueItem> {
+    private class RandomizedQueueIterator implements Iterator<Item> {
         private int nextItemIndex;
-        private RandomizedQueueItem[] items;
+        private Item[] items;
 
-        public RandomizedQueueIterator(RandomizedQueueItem[] items, int nextItemIndex) {
+        public RandomizedQueueIterator(Item[] items, int nextItemIndex) {
             this.items = items;
             this.nextItemIndex = nextItemIndex;
         }
@@ -19,13 +19,17 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
             return nextItemIndex > 0;
         }
 
-        public RandomizedQueueItem next() {
+        public Item next() {
+            if (nextItemIndex <= 0) {
+               throw  new NoSuchElementException();
+            }
+
             int indexToSwap = StdRandom.uniformInt(nextItemIndex);
-            RandomizedQueueItem tmp = items[nextItemIndex  - 1];
+            Item tmp = items[nextItemIndex  - 1];
             items[nextItemIndex  - 1] = items[indexToSwap];
             items[indexToSwap] = tmp;
 
-            RandomizedQueueItem item = items[nextItemIndex  - 1];
+            Item item = items[nextItemIndex  - 1];
             nextItemIndex--;
 
             return item;
@@ -38,7 +42,7 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
 
     public RandomizedQueue() {
         nextItemIndex = 0;
-        items = (RandomizedQueueItem[]) new Object[1];
+        items = (Item[]) new Object[1];
     }
 
     public boolean isEmpty() {
@@ -49,7 +53,7 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
         return nextItemIndex;
     }
 
-    public void enqueue(RandomizedQueueItem item) {
+    public void enqueue(Item item) {
         if (item == null) {
             throw new IllegalArgumentException("Can't enqueue null item");
         }
@@ -62,7 +66,7 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
         nextItemIndex++;
     }
 
-    public RandomizedQueueItem sample() {
+    public Item sample() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
@@ -71,17 +75,17 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
         return items[indexSample];
     }
 
-    public RandomizedQueueItem dequeue() {
+    public Item dequeue() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
 
         int indexToSwap = StdRandom.uniformInt(nextItemIndex);
-        RandomizedQueueItem tmp = items[nextItemIndex  - 1];
+        Item tmp = items[nextItemIndex  - 1];
         items[nextItemIndex  - 1] = items[indexToSwap];
         items[indexToSwap] = tmp;
 
-        RandomizedQueueItem item = items[nextItemIndex  - 1];
+        Item item = items[nextItemIndex  - 1];
         nextItemIndex--;
 
         if (items.length > 1 && nextItemIndex <= (items.length / 4)) {
@@ -91,31 +95,31 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
         return item;
     }
 
-    public Iterator<RandomizedQueueItem> iterator() {
+    public Iterator<Item> iterator() {
         return new RandomizedQueueIterator(items, nextItemIndex);
     }
 
-    public void print() {
-        System.out.print("|" + nextItemIndex + "| -> ");
-        for (int i = 0; i < items.length; i++) {
-           if (items[i] == null) {
-               System.out.print("x");
-           } else {
-               System.out.print(items[i]);
-           }
-
-           if (i == nextItemIndex - 1) {
-               System.out.print("|");
-           }
-        }
-
-        System.out.println();
-        System.out.println("*******");
-    }
+//    public void print() {
+//        System.out.print("|" + nextItemIndex + "| -> ");
+//        for (int i = 0; i < items.length; i++) {
+//           if (items[i] == null) {
+//               System.out.print("x");
+//           } else {
+//               System.out.print(items[i]);
+//           }
+//
+//           if (i == nextItemIndex - 1) {
+//               System.out.print("|");
+//           }
+//        }
+//
+//        System.out.println();
+//        System.out.println("*******");
+//    }
 
     private void divideItemsLength() {
         int targetSize = items.length / 2;
-        RandomizedQueueItem[] newItems =  (RandomizedQueueItem[]) new Object[targetSize];
+        Item[] newItems =  (Item[]) new Object[targetSize];
         for (int i = 0; i < newItems.length; i++) {
             newItems[i] = items[i];
         }
@@ -124,7 +128,7 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
 
     private void doubleItemsLength() {
         int targetSize = items.length * 2;
-        RandomizedQueueItem[] newItems =  (RandomizedQueueItem[]) new Object[targetSize];
+        Item[] newItems =  (Item[]) new Object[targetSize];
         for (int i = 0; i < items.length; i++) {
             newItems[i] = items[i];
         }
@@ -132,14 +136,14 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
     }
 
     public static void main(String[] args) {
-        RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
-        rq.print();
-
-        for (int i = 1; i <= 10; i++) {
-            System.out.println("Enqueue " + i);
-            rq.enqueue(i);
-            rq.print();
-        }
+//        RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
+//        rq.print();
+//
+//        for (int i = 1; i <= 10; i++) {
+//            System.out.println("Enqueue " + i);
+//            rq.enqueue(i);
+//            rq.print();
+//        }
 
 //        System.out.println("**********");
 //        for(Integer i : rq) {
@@ -147,9 +151,9 @@ public class RandomizedQueue<RandomizedQueueItem> implements Iterable<Randomized
 //        }
 //        System.out.println("**********");
 
-        for (int i = 1; i <= 10; i++) {
-            System.out.println("Dequeue " + rq.dequeue());
-            rq.print();
-        }
+//        for (int i = 1; i <= 10; i++) {
+//            System.out.println("Dequeue " + rq.dequeue());
+//            rq.print();
+//        }
     }
 }
