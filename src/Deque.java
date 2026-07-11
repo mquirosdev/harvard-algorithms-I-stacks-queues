@@ -1,16 +1,20 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Deque<DequeType> implements Iterable<DequeType> {
-    private class DequeIterator implements Iterator<DequeType> {
-        private Node<DequeType> current = head;
+public class Deque<DequeItem> implements Iterable<DequeItem> {
+    private class DequeIterator implements Iterator<DequeItem> {
+        private Node<DequeItem> current;
 
-        public DequeType next() {
+        public DequeIterator(Node<DequeItem> current) {
+            this.current = current;
+        }
+
+        public DequeItem next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("no next element");
             }
 
-            DequeType value = current.value;
+            DequeItem value = current.value;
             current = current.next;
 
             return value;
@@ -29,9 +33,11 @@ public class Deque<DequeType> implements Iterable<DequeType> {
         public NodeType value;
         public Node<NodeType> next;
         public Node<NodeType> prev;
+
         public Node(NodeType value) {
             this.value = value;
         }
+
         public Node(
                 NodeType value,
                 Node<NodeType> next,
@@ -43,8 +49,8 @@ public class Deque<DequeType> implements Iterable<DequeType> {
         }
     }
 
-    private Node<DequeType> head;
-    private Node<DequeType> tail;
+    private Node<DequeItem> head;
+    private Node<DequeItem> tail;
     private int totalNodes;
 
     public Deque() {
@@ -53,12 +59,12 @@ public class Deque<DequeType> implements Iterable<DequeType> {
         totalNodes = 0;
     }
 
-    public void addFirst(DequeType value) {
+    public void addFirst(DequeItem value) {
         if (value == null) {
             throw new IllegalArgumentException("Can't add null");
         }
 
-        Node<DequeType> node = new Node<DequeType>(value, head, null);
+        Node<DequeItem> node = new Node<DequeItem>(value, head, null);
 
         if (head != null) {
             head.prev = node;
@@ -70,12 +76,12 @@ public class Deque<DequeType> implements Iterable<DequeType> {
         totalNodes++;
     }
 
-    public void addLast(DequeType value) {
+    public void addLast(DequeItem value) {
         if (value == null) {
             throw new IllegalArgumentException("Can't add null");
         }
 
-        Node<DequeType> node = new Node<DequeType>(value, null, tail);
+        Node<DequeItem> node = new Node<DequeItem>(value, null, tail);
 
         if (tail != null) {
             tail.next = node;
@@ -87,12 +93,12 @@ public class Deque<DequeType> implements Iterable<DequeType> {
         totalNodes++;
     }
 
-    public DequeType removeFirst() {
+    public DequeItem removeFirst() {
         if (isEmpty()) {
             throw new NoSuchElementException("No elements to remove");
         }
 
-        Node<DequeType> node = head;
+        Node<DequeItem> node = head;
         head = head.next;
 
         if (head != null) {
@@ -105,12 +111,12 @@ public class Deque<DequeType> implements Iterable<DequeType> {
         return node.value;
     }
 
-    public DequeType removeLast() {
+    public DequeItem removeLast() {
         if (isEmpty()) {
             throw new NoSuchElementException("No elements to remove");
         }
 
-        Node<DequeType> node = tail;
+        Node<DequeItem> node = tail;
         tail = tail.prev;
 
         if(tail != null) {
@@ -131,19 +137,19 @@ public class Deque<DequeType> implements Iterable<DequeType> {
         return totalNodes == 0;
     }
 
-    public Iterator<DequeType> iterator() {
-        return new DequeIterator();
+    public Iterator<DequeItem> iterator() {
+        return new DequeIterator(head);
     }
 
     public void print() {
-        for (DequeType value : this) {
+        for (DequeItem value : this) {
             System.out.printf("(" + value + ") ->");
         }
         System.out.println("size " + totalNodes);
     }
 
     public void printBackwards() {
-        Node<DequeType> current = tail;
+        Node<DequeItem> current = tail;
         while (current != null) {
             System.out.printf("(" + current.value + ") ->");
             current = current.prev;
