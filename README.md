@@ -1,4 +1,4 @@
-# harvard-algorithms-I-stacks-queues
+# Stacks & Queues
 
 ## Requirements
 
